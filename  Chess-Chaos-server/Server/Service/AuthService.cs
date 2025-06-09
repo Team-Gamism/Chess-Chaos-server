@@ -18,13 +18,13 @@ public class AuthService : IAuthService
     
     public async Task<bool> RegisterAsync(string playerId, string password)
     {
-        bool exists = await _db.PlayerLoginDatas.AnyAsync(p => p.PlayerId == playerId);
+        bool exists = await _db.Accounts.AsNoTracking().AnyAsync(p => p.PlayerId == playerId);
         if (!exists) 
             return false;
         
         var hashedPassword = _passwordService.HashPassword(password);
 
-        _db.PlayerLoginDatas.Add(new PlayerLoginData
+        _db.Accounts.Add(new PlayerLoginData
         {
             PlayerId = playerId,
             Password = hashedPassword
@@ -36,7 +36,7 @@ public class AuthService : IAuthService
     
     public async Task<string?> LoginAsync(string playerId, string password)
     {
-        var user = await _db.PlayerLoginDatas.SingleOrDefaultAsync(p => p.PlayerId == playerId);
+        var user = await _db.Accounts.SingleOrDefaultAsync(p => p.PlayerId == playerId);
         if (user == null)
             return null;
         

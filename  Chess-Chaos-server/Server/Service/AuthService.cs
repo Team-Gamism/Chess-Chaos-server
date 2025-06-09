@@ -1,42 +1,41 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Server.Data;
-using Server.Model.Entity;
+﻿using Server.Model.Entity;
+using Server.Repository.Interface;
 using Server.Service.Interface;
 
 namespace Server.Service;
 
 public class AuthService : IAuthService
 {
-    public readonly AppDbContext _db;
-    public readonly IPasswordService _passwordService;
+    private readonly IAccountRepository _accountRepository;
+    private readonly IPasswordService _passwordService;
 
-    public AuthService(AppDbContext db, IPasswordService passwordService)
+    public AuthService(IAccountRepository accountRepository, IPasswordService passwordService)
     {
-        _db = db;
+        _accountRepository = accountRepository;
         _passwordService = passwordService;
     }
     
     public async Task<bool> RegisterAsync(string playerId, string password)
     {
-        bool exists = await _db.Accounts.AsNoTracking().AnyAsync(p => p.PlayerId == playerId);
+        bool exists = await _accountRepository.ExistsAsync(playerId);
         if (!exists) 
             return false;
         
         var hashedPassword = _passwordService.HashPassword(password);
 
-        _db.Accounts.Add(new PlayerLoginData
+        await _accountRepository.AddAccountAsync(new PlayerLoginData
         {
             PlayerId = playerId,
             Password = hashedPassword
         });
         
-        await _db.SaveChangesAsync();
+        await _accountRepository.SaveChagesAsync();
         return true;
     }
     
     public async Task<string?> LoginAsync(string playerId, string password)
     {
-        var user = await _db.Accounts.SingleOrDefaultAsync(p => p.PlayerId == playerId);
+        var user = await _accountRepository.FindByPlayerIdAsync(playerId);
         if (user == null)
             return null;
         

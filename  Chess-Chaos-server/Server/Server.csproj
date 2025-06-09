@@ -14,7 +14,7 @@
       <Folder Include="Controller\" />
       <Folder Include="Data\" />
       <Folder Include="Repository\" />
-      <Folder Include="Service\" />
+      <Folder Include="Service\Interface\" />
     </ItemGroup>
 
 </Project>

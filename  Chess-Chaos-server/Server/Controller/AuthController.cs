@@ -1,5 +1,7 @@
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Server.Model.Dto.Request;
+using Server.Model.Dto.Response;
+using Server.Service.Interface;
 
 namespace Server.Controller
 {
@@ -7,5 +9,49 @@ namespace Server.Controller
     [ApiController]
     public class AuthController : ControllerBase
     {
+        public readonly IAuthService _authService;
+
+        public AuthController(IAuthService authService)
+        {
+            _authService = authService;
+        }
+
+        [HttpPost("register")]
+        public async Task<ActionResult<RegisterResponse>> Register(RegisterRequest req)
+        {
+            var success = await _authService.RegisterAsync(req.PlayerId, req.Password);
+            if (!success)
+                return Conflict(new RegisterResponse
+                {
+                    PlayerId = req.PlayerId,
+                    Message = "Id already exists"
+                });
+
+            return Ok(new RegisterResponse
+            {
+                PlayerId = req.PlayerId,
+                Message = "Register Success"
+            });
+        }
+        
+        [HttpPost("login")]
+        public async Task<ActionResult<LoginResponse>> Login([FromBody] LoginRequest req)
+        {
+            var token = await _authService.LoginAsync(req.PlayerId, req.Password);
+            if (token == null)
+                return Unauthorized(new LoginResponse
+                {
+                    PlayerId = req.PlayerId,
+                    Token = String.Empty,
+                    Message = "Invalid credentials"
+                });
+
+            return Ok(new LoginResponse
+            {
+                PlayerId = req.PlayerId,
+                Token = token,
+                Message = "Login successful"
+            });
+        }
     }
 }

@@ -14,7 +14,6 @@ public class AccountRepository : IAccountRepository
         _dbContext = dbContext;
     }
 
-
     public async Task<bool> ExistsAsync(string playerId)
     {
         return await _dbContext.Accounts.AsNoTracking().AnyAsync(p => p.PlayerId == playerId);

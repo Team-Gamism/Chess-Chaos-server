@@ -17,12 +17,14 @@ public class RankingRepository : IRankingRepository
     public async Task<PlayerRankingData?> GetByPlayerIdAsync(string playerId)
     {
         return await _dbContext.PlayerRankings
+            .AsNoTracking()
             .SingleOrDefaultAsync(p => p.PlayerId == playerId);
     }
 
     public async Task<List<PlayerRankingData>> GetTopAsync(int count)
     {
         return await _dbContext.PlayerRankings
+            .AsNoTracking()
             .OrderByDescending(p => p.Score)
             .Take(count)
             .ToListAsync();

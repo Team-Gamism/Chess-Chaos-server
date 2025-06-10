@@ -18,7 +18,6 @@
     <ItemGroup>
       <Folder Include="Controller\" />
       <Folder Include="Model\Account\" />
-      <Folder Include="Model\Ranking\Dto\" />
     </ItemGroup>
 
 </Project>

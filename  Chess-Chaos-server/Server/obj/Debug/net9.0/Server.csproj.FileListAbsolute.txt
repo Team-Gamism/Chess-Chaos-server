@@ -52,15 +52,7 @@ C:\Users\USER\Documents\GitHub\Chess-Chaos-server\ Chess-Chaos-server\Server\bin
 C:\Users\USER\Documents\GitHub\Chess-Chaos-server\ Chess-Chaos-server\Server\bin\Debug\net9.0\Microsoft.DotNet.Scaffolding.Shared.dll
 C:\Users\USER\Documents\GitHub\Chess-Chaos-server\ Chess-Chaos-server\Server\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.dll
 C:\Users\USER\Documents\GitHub\Chess-Chaos-server\ Chess-Chaos-server\Server\bin\Debug\net9.0\Microsoft.EntityFrameworkCore.Abstractions.dll
-C:\Users\USER\Documents\GitHub\Chess-Chaos-server\ Chess-Chaos-server\Server\bin\Debug\net9.0\Microsoft.Extensions.Caching.Abstractions.dll
-C:\Users\USER\Documents\GitHub\Chess-Chaos-server\ Chess-Chaos-server\Server\bin\Debug\net9.0\Microsoft.Extensions.Caching.Memory.dll
-C:\Users\USER\Documents\GitHub\Chess-Chaos-server\ Chess-Chaos-server\Server\bin\Debug\net9.0\Microsoft.Extensions.DependencyInjection.dll
-C:\Users\USER\Documents\GitHub\Chess-Chaos-server\ Chess-Chaos-server\Server\bin\Debug\net9.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 C:\Users\USER\Documents\GitHub\Chess-Chaos-server\ Chess-Chaos-server\Server\bin\Debug\net9.0\Microsoft.Extensions.DependencyModel.dll
-C:\Users\USER\Documents\GitHub\Chess-Chaos-server\ Chess-Chaos-server\Server\bin\Debug\net9.0\Microsoft.Extensions.Logging.dll
-C:\Users\USER\Documents\GitHub\Chess-Chaos-server\ Chess-Chaos-server\Server\bin\Debug\net9.0\Microsoft.Extensions.Logging.Abstractions.dll
-C:\Users\USER\Documents\GitHub\Chess-Chaos-server\ Chess-Chaos-server\Server\bin\Debug\net9.0\Microsoft.Extensions.Options.dll
-C:\Users\USER\Documents\GitHub\Chess-Chaos-server\ Chess-Chaos-server\Server\bin\Debug\net9.0\Microsoft.Extensions.Primitives.dll
 C:\Users\USER\Documents\GitHub\Chess-Chaos-server\ Chess-Chaos-server\Server\bin\Debug\net9.0\Microsoft.NET.StringTools.dll
 C:\Users\USER\Documents\GitHub\Chess-Chaos-server\ Chess-Chaos-server\Server\bin\Debug\net9.0\Microsoft.VisualStudio.Web.CodeGeneration.dll
 C:\Users\USER\Documents\GitHub\Chess-Chaos-server\ Chess-Chaos-server\Server\bin\Debug\net9.0\Microsoft.VisualStudio.Web.CodeGeneration.Core.dll

@@ -50,7 +50,11 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
-builder.Services.AddControllers();
+builder.Services.AddControllers().
+    AddJsonOptions(opt =>
+    {
+        opt.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+    });
 
 builder.Services.AddOpenApi();
 

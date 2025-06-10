@@ -17,7 +17,7 @@ namespace Server.Controller
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<RegisterResponse>> Register(RegisterRequest req)
+        public async Task<ActionResult<RegisterResponse>> Register([FromBody] RegisterRequest req)
         {
             var success = await _authService.RegisterAsync(req.PlayerId, req.Password);
             if (!success)

@@ -27,6 +27,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSetting>();
 var key = Encoding.UTF8.GetBytes(jwtSettings.SecretKey);
 
+if (jwtSettings == null || string.IsNullOrEmpty(jwtSettings.SecretKey))
+    throw new InvalidOperationException("JWT settings are not properly configured.");
+
 builder.Services.AddAuthentication(options =>
     {
         options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;

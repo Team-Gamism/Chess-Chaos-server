@@ -12,7 +12,7 @@ using Server.Service.Interface;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<JwtSetting>(
-    builder.Configuration.GetSection("JwtSetting"));
+    builder.Configuration.GetSection("JwtSettings"));
 
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -24,7 +24,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         builder.Configuration.GetConnectionString("DefaultConnection"),
         ServerVersion.AutoDetect(builder.Configuration.GetConnectionString("DefaultConnection"))));
 
-var jwtSettings = builder.Configuration.GetSection("JwtSetting").Get<JwtSetting>();
+var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSetting>();
 var key = Encoding.UTF8.GetBytes(jwtSettings.SecretKey);
 
 builder.Services.AddAuthentication(options =>

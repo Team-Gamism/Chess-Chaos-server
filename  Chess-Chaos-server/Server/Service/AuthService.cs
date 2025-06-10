@@ -8,17 +8,20 @@ public class AuthService : IAuthService
 {
     private readonly IAccountRepository _accountRepository;
     private readonly IPasswordService _passwordService;
+    private readonly IJwtService _jwtService;
 
-    public AuthService(IAccountRepository accountRepository, IPasswordService passwordService)
+    public AuthService(IAccountRepository accountRepository,
+        IPasswordService passwordService, IJwtService jwtService)
     {
         _accountRepository = accountRepository;
         _passwordService = passwordService;
+        _jwtService = jwtService;
     }
     
     public async Task<bool> RegisterAsync(string playerId, string password)
     {
         bool exists = await _accountRepository.ExistsAsync(playerId);
-        if (!exists) 
+        if (exists) 
             return false;
         
         var hashedPassword = _passwordService.HashPassword(password);
@@ -42,6 +45,6 @@ public class AuthService : IAuthService
         if (!_passwordService.VerifyPassword(password, user.Password))
             return null;
         
-        return Guid.NewGuid().ToString(); // 나중에 JWT 토큰 반환으로 수정
+        return _jwtService.GenerateToken(playerId);
     }
 }

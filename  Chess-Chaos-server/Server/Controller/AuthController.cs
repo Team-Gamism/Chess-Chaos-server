@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Server.Model.Dto.Request;
-using Server.Model.Dto.Response;
+using Server.Model.Account.Dto.Request;
+using Server.Model.Account.Dto.Response;
 using Server.Service.Interface;
 
 namespace Server.Controller

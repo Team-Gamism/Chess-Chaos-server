@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Server.Model.Entity;
+using Server.Model.Account.Entity;
 using Server.Model.Ranking.Entity;
 
 namespace Server.Data;

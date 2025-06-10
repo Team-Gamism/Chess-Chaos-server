@@ -9,7 +9,7 @@ namespace Server.Controller
     [ApiController]
     public class AuthController : ControllerBase
     {
-        public readonly IAuthService _authService;
+        private readonly IAuthService _authService;
 
         public AuthController(IAuthService authService)
         {

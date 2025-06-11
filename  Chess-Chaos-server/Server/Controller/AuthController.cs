@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using Server.Model.Dto.Request;
-using Server.Model.Dto.Response;
+using Server.Model.Account.Dto.Request;
+using Server.Model.Account.Dto.Response;
 using Server.Service.Interface;
 
 namespace Server.Controller
@@ -17,7 +17,7 @@ namespace Server.Controller
         }
 
         [HttpPost("register")]
-        public async Task<ActionResult<RegisterResponse>> Register(RegisterRequest req)
+        public async Task<ActionResult<RegisterResponse>> Register([FromBody] RegisterRequest req)
         {
             var success = await _authService.RegisterAsync(req.PlayerId, req.Password);
             if (!success)

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Server.Model.Dto.Request;
+namespace Server.Model.Account.Dto.Request;
 
 public class RegisterRequest
 {

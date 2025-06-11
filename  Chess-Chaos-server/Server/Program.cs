@@ -15,7 +15,9 @@ builder.Services.Configure<JwtSetting>(
     builder.Configuration.GetSection("JwtSettings"));
 
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IRankingRepository, RankingRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IRankingService, RankingService>();
 builder.Services.AddSingleton<IJwtService, JwtService>();
 builder.Services.AddSingleton<IPasswordService, PasswordService>();
 
@@ -26,6 +28,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 var jwtSettings = builder.Configuration.GetSection("JwtSettings").Get<JwtSetting>();
 var key = Encoding.UTF8.GetBytes(jwtSettings.SecretKey);
+
+if (jwtSettings == null || string.IsNullOrEmpty(jwtSettings.SecretKey))
+    throw new InvalidOperationException("JWT settings are not properly configured.");
 
 builder.Services.AddAuthentication(options =>
     {
@@ -47,9 +52,11 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
-builder.Services.AddControllers();
-
-builder.Services.AddOpenApi();
+builder.Services.AddControllers().
+    AddJsonOptions(opt =>
+    {
+        opt.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+    });
 
 builder.Services.AddCors(options =>
 {
@@ -62,11 +69,6 @@ builder.Services.AddCors(options =>
 });
 
 var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
 
 app.UseHttpsRedirection();
 app.UseCors("AllowUnity");

@@ -1,4 +1,4 @@
-﻿namespace Server.Model.Dto.Response;
+﻿namespace Server.Model.Account.Dto.Response;
 
 public class RegisterResponse
 {

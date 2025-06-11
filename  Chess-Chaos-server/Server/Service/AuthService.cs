@@ -1,4 +1,4 @@
-﻿using Server.Model.Entity;
+﻿using Server.Model.Account.Entity;
 using Server.Repository.Interface;
 using Server.Service.Interface;
 

@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Server.Model.Entity;
+namespace Server.Model.Account.Entity;
 
 [Table("player_login_data")]
 public class PlayerLoginData

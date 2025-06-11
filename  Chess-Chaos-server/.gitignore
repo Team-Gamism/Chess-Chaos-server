@@ -10,6 +10,9 @@ out/
 **/bin/
 **/obj/
 
+*.dll
+*.exe
+
 # User-specific files
 *.user
 *.suo

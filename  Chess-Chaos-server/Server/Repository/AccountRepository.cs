@@ -18,7 +18,7 @@ public class AccountRepository : IAccountRepository
     
     public async Task<bool> ExistsAsync(string playerId)
     {
-        const string sql = "SELECT COUNT(1) FROM player_login_data WHERE PlayerId = @PlayerId";
+        const string sql = "SELECT COUNT(1) FROM player_login_data WHERE player_id = @PlayerId";
         
         await using var connection = CreateConnection();
         await connection.OpenAsync();
@@ -30,7 +30,7 @@ public class AccountRepository : IAccountRepository
 
     public async Task AddAccountAsync(PlayerLoginData account)
     {
-        const string sql = "INSERT INTO player_login_data (PlayerId, Password) VALUES (@PlayerId, @Password)";
+        const string sql = "INSERT INTO player_login_data (player_id, password) VALUES (@PlayerId, @Password)";
         
         await using var connection = CreateConnection();
         await connection.OpenAsync();
@@ -40,7 +40,7 @@ public class AccountRepository : IAccountRepository
 
     public async Task<PlayerLoginData?> FindByPlayerIdAsync(string playerId)
     {
-        const string sql = "SELECT PlayerId, Password FROM player_login_data WHERE PlayerId = @PlayerId";
+        const string sql = "SELECT player_id, password FROM player_login_data WHERE player_id = @PlayerId";
         
         await using var connection = CreateConnection();
         await connection.OpenAsync();

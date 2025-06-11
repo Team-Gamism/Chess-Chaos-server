@@ -32,7 +32,6 @@ public class AuthService : IAuthService
             Password = hashedPassword
         });
         
-        await _accountRepository.SaveChagesAsync();
         return true;
     }
     

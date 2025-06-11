@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Server.Model.Account.Entity;
 using Server.Model.Ranking.Entity;
 
 namespace Server.Data;
@@ -11,6 +10,5 @@ public class AppDbContext : DbContext
         
     }
     
-    public DbSet<PlayerLoginData> Accounts { get; set; } = null!;
     public DbSet<PlayerRankingData> PlayerRankings { get; set; } = null!;
 }

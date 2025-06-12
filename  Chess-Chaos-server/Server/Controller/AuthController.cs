@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Server.Model.Account.Dto.Request;
 using Server.Model.Account.Dto.Response;
+using Server.Model.Token.Dto;
 using Server.Service.Interface;
 
 namespace Server.Controller
@@ -42,7 +43,7 @@ namespace Server.Controller
                 return Unauthorized(new LoginResponse
                 {
                     PlayerId = req.PlayerId,
-                    Token = String.Empty,
+                    Token = null,
                     Message = "Invalid credentials"
                 });
 

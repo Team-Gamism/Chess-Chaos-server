@@ -26,14 +26,14 @@ public class RefreshTokenService : IRefreshTokenService
         }
         else
         {
-            var toeknData = new RefreshTokenData
+            var tokenData = new RefreshTokenData
             {
                 PlayerId = playerId,
                 RefreshToken = refreshToken,
                 ExpiryDate = expiryDate
             };
             
-            await _context.RefreshTokens.AddAsync(toeknData);
+            await _context.RefreshTokens.AddAsync(tokenData);
         }
         
         await _context.SaveChangesAsync();

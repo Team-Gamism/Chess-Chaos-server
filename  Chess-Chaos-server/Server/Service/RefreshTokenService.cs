@@ -17,7 +17,6 @@ public class RefreshTokenService : IRefreshTokenService
     public async Task SaveRefreshTokenAsync(string playerId, string refreshToken, DateTime expiryDate)
     {
         var exists = await _context.RefreshTokens
-            .AsNoTracking()
             .FirstOrDefaultAsync(rt => rt.PlayerId == playerId);
 
         if (exists != null)

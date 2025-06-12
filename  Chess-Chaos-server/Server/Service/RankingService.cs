@@ -8,21 +8,26 @@ public class RankingService : IRankingService
 {
     private readonly IRankingRepository _repository;
     private readonly ICacheService _cacheService;
+    private ILogger<RankingService> _logger;
 
     private const string TopRankingCachekey = "Ranking:Top";
     
-    public RankingService(IRankingRepository repository, ICacheService cacheService)
+    public RankingService(IRankingRepository repository, ICacheService cacheService, ILogger<RankingService> logger)
     {
         _repository = repository;
         _cacheService = cacheService;
+        _logger = logger;
     }
     
     public async Task SubmitRankingAsync(string playerId, int score)
     {
         var exists = await _repository.GetByPlayerIdAsync(playerId);
 
+        bool updated = false;
+        
         if (exists == null)
         {
+            _logger.LogInformation($"랭킹 등록, playerId: {playerId}, score: {score}");
             var newRanking = new PlayerRankingData
             {
                 PlayerId = playerId,
@@ -30,11 +35,23 @@ public class RankingService : IRankingService
             };
             
             await _repository.AddAsync(newRanking);
+            updated = true;
         }
         else if (score > exists.Score)
         {
+            _logger.LogInformation($"플레이어 {playerId} 점수 갱신: {score}");
             exists.Score = score;
             await _repository.UpdateAsync(exists);
+            updated = true;
+        }
+
+        if (updated)
+        {
+            for (int i = 1; i < 6; i++)
+            {
+                string cacheKey = $"{TopRankingCachekey}:{i}";
+                await _cacheService.RemoveDataAsync(cacheKey);
+            }
         }
         
         await _repository.SaveAsync();

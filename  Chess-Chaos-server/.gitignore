@@ -1,0 +1,46 @@
+# Rider
+.idea/
+*.sln.iml
+*.nuget.info
+
+# Build output
+bin/
+obj/
+out/
+**/bin/
+**/obj/
+
+*.dll
+*.exe
+
+# User-specific files
+*.user
+*.suo
+*.sln.docstates
+
+# Logs and temp
+*.log
+*.tmp
+*.bak
+*.old
+
+# Secret settings
+appsettings.json
+appsettings.*.json
+secrets.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# VSCode
+.vscode/
+
+*.cache
+*.db
+*.pid
+*.pdb
+*.mdb
+*.resharper
+_ReSharper*/
+*.sln.cache

@@ -3,5 +3,5 @@
 public interface IJwtService
 {
     string GenerateToken(string playerId);
-    public string GenerateRefreshToken()
+    public string GenerateRefreshToken();
 }

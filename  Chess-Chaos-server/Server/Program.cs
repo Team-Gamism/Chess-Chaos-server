@@ -20,6 +20,12 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IRankingService, RankingService>();
 builder.Services.AddSingleton<IJwtService, JwtService>();
 builder.Services.AddSingleton<IPasswordService, PasswordService>();
+builder.Services.AddSingleton<ICacheService, CacheService>();
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration["Redis:ConnectionString"];
+});
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(

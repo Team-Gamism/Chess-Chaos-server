@@ -1,7 +1,9 @@
-﻿namespace Server.Service.Interface;
+﻿using Server.Model.Token.Dto;
+
+namespace Server.Service.Interface;
 
 public interface IAuthService
 {
-    Task<string?> LoginAsync(string playerId, string password);
+    Task<TokenResponse?> LoginAsync(string playerId, string password);
     Task<bool> RegisterAsync(string playerId, string password);
 }

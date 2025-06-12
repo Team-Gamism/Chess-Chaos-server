@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Server.Model.Account.Entity;
+using Server.Model.Token.Dto;
 using Server.Repository.Interface;
 using Server.Service.Interface;
 
@@ -10,16 +11,18 @@ public class AuthService : IAuthService
     private readonly IAccountRepository _accountRepository;
     private readonly IPasswordService _passwordService;
     private readonly IJwtService _jwtService;
+    private readonly IRefreshTokenService _refreshTokenService;
     private readonly ILogger<AuthService> _logger;
     
     public AuthService(IAccountRepository accountRepository,
         IPasswordService passwordService, IJwtService jwtService,
-        ILogger<AuthService> logger)
+        ILogger<AuthService> logger, IRefreshTokenService refreshTokenService)
     {
         _accountRepository = accountRepository;
         _passwordService = passwordService;
         _jwtService = jwtService;
         _logger = logger;
+        _refreshTokenService = refreshTokenService;
     }
     
     public async Task<bool> RegisterAsync(string playerId, string password)
@@ -48,7 +51,7 @@ public class AuthService : IAuthService
         return true;
     }
     
-    public async Task<string?> LoginAsync(string playerId, string password)
+    public async Task<TokenResponse?> LoginAsync(string playerId, string password)
     {
         var stopwatch = Stopwatch.StartNew();
 
@@ -65,12 +68,21 @@ public class AuthService : IAuthService
             return null;
         }
 
-        var token = _jwtService.GenerateToken(playerId);
+        var accessToken = _jwtService.GenerateToken(playerId);
+        
+        var refreshToken = _jwtService.GenerateRefreshToken();
+        var refreshTokenExpiry = DateTime.UtcNow.AddDays(7);
+        
+        await _refreshTokenService.SaveRefreshTokenAsync(playerId, refreshToken, refreshTokenExpiry);
 
         stopwatch.Stop();
         _logger.LogInformation("LoginAsync succeeded for '{PlayerId}' in {ElapsedMilliseconds} ms",
             playerId, stopwatch.ElapsedMilliseconds);
 
-        return token;
+        return new TokenResponse
+        {
+            AccessToken = accessToken,
+            RefreshToken = refreshToken
+        };
     }
 }

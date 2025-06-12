@@ -1,75 +1,49 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Server.Data;
-using Server.Model.Token.Entity;
-using Server.Service.Interface;
+﻿using Server.Service.Interface;
+using StackExchange.Redis;
 
 namespace Server.Service;
 
 public class RefreshTokenService : IRefreshTokenService
 {
-    private readonly AppDbContext _context;
+    private readonly IDatabase _redisDb;
+    private const string RefreshTokenKey = "refresh:";
 
-    public RefreshTokenService(AppDbContext context)
+    public RefreshTokenService(IDatabase redisDb)
     {
-        _context = context;
+        _redisDb = redisDb;
     }
     
     public async Task SaveRefreshTokenAsync(string playerId, string refreshToken, DateTime expiryDate)
     {
-        var exists = await _context.RefreshTokens
-            .FirstOrDefaultAsync(rt => rt.PlayerId == playerId);
-
-        if (exists != null)
-        {
-            exists.RefreshToken = refreshToken;
-            exists.ExpiryDate = expiryDate;
-        }
-        else
-        {
-            var tokenData = new RefreshTokenData
-            {
-                PlayerId = playerId,
-                RefreshToken = refreshToken,
-                ExpiryDate = expiryDate
-            };
-            
-            await _context.RefreshTokens.AddAsync(tokenData);
-        }
+        var key = RefreshTokenKey + playerId;
+        var ttl = expiryDate - DateTime.UtcNow;
         
-        await _context.SaveChangesAsync();
+        await _redisDb.StringSetAsync(key, refreshToken, ttl);
     }
 
     public async Task<bool> ValidateRefreshTokenAsync(string playerId, string refreshToken)
     {
-        var token = await _context.RefreshTokens
-            .FirstOrDefaultAsync(rt => rt.PlayerId == playerId && rt.RefreshToken == refreshToken);
+        var key = RefreshTokenKey + playerId;
+        var storedToken = await _redisDb.StringGetAsync(key);
         
-        return token != null && token.ExpiryDate > DateTime.UtcNow;
+        return storedToken == refreshToken;
     }
 
     public async Task ReplaceRefreshTokenAsync(string playerId, string oldToken, string newToken, DateTime newExpiry)
     {
-        var token = await _context.RefreshTokens
-            .FirstOrDefaultAsync(rt => rt.PlayerId == playerId && rt.RefreshToken == oldToken);
+        var key = RefreshTokenKey + playerId;
+        var currentToken = await _redisDb.StringGetAsync(key);
 
-        if (token != null)
+        if (currentToken == oldToken)
         {
-            token.RefreshToken = newToken;
-            token.ExpiryDate = newExpiry;
-            
-            await _context.SaveChangesAsync();
+            var ttl = newExpiry - DateTime.UtcNow;
+            await _redisDb.StringSetAsync(key, newToken, ttl);
         }
     }
 
     public async Task DeleteRefreshTokenAsync(string playerId)
     {
-        var token = await _context.RefreshTokens
-            .FirstOrDefaultAsync(rt => rt.PlayerId == playerId);
-
-        if (token != null)
-        {
-            _context.RefreshTokens.Remove(token);
-            await _context.SaveChangesAsync();
-        }
+        var key = RefreshTokenKey + playerId;
+        await _redisDb.KeyDeleteAsync(key);
     }
 }
